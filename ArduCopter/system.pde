@@ -187,10 +187,10 @@ static void init_ardupilot()
     gcs[1].init(hal.uartC);
 #endif
 #if MAVLINK_COMM_NUM_BUFFERS > 2
-    if (hal.uartD != NULL) {
-        hal.uartD->begin(map_baudrate(g.serial2_baud, SERIAL2_BAUD), 128, 128);
-        gcs[2].init(hal.uartD);
-    }
+//    if (hal.uartD != NULL) {
+//        hal.uartD->begin(map_baudrate(g.serial2_baud, SERIAL2_BAUD), 128, 128);
+//        gcs[2].init(hal.uartD);
+//    }
 #endif
 
     // identify ourselves correctly with the ground station
