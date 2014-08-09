@@ -1,0 +1,203 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{37FB59B6-ABB0-47A5-910C-2AAB9292E480}</ProjectGuid>
+    <RootNamespace>ArduCopter</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v110</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v110</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>C:\Program Files (x86)\Arduino-1.0.3apm\hardware\arduino\cores\arduino;C:\Program Files (x86)\Arduino-1.0.3apm\hardware\arduino\variants\mega;C:\develop\Arduino\GIT\ardupilot\libraries\AP_Common;C:\develop\Arduino\GIT\ardupilot\libraries\AP_Common\utility;C:\develop\Arduino\GIT\ardupilot\libraries\AP_Progmem;C:\develop\Arduino\GIT\ardupilot\libraries\AP_Progmem\utility;C:\develop\Arduino\GIT\ardupilot\libraries\AP_Menu;C:\develop\Arduino\GIT\ardupilot\libraries\AP_Menu\utility;C:\develop\Arduino\GIT\ardupilot\libraries\AP_Param;C:\develop\Arduino\GIT\ardupilot\libraries\AP_Param\utility;C:\develop\Arduino\GIT\ardupilot\libraries\AP_HAL;C:\develop\Arduino\GIT\ardupilot\libraries\AP_HAL\utility;C:\develop\Arduino\GIT\ardupilot\libraries\AP_HAL_AVR;C:\develop\Arduino\GIT\ardupilot\libraries\AP_HAL_AVR\utility;C:\develop\Arduino\GIT\ardupilot\libraries\AP_HAL_AVR_SITL;C:\develop\Arduino\GIT\ardupilot\libraries\AP_HAL_AVR_SITL\utility;C:\develop\Arduino\GIT\ardupilot\libraries\AP_HAL_PX4;C:\develop\Arduino\GIT\ardupilot\libraries\AP_HAL_PX4\utility;C:\develop\Arduino\GIT\ardupilot\libraries\AP_HAL_FLYMAPLE;C:\develop\Arduino\GIT\ardupilot\libraries\AP_HAL_FLYMAPLE\utility;C:\develop\Arduino\GIT\ardupilot\libraries\AP_HAL_Linux;C:\develop\Arduino\GIT\ardupilot\libraries\AP_HAL_Linux\utility;C:\develop\Arduino\GIT\ardupilot\libraries\AP_HAL_Empty;C:\develop\Arduino\GIT\ardupilot\libraries\AP_HAL_Empty\utility;C:\develop\Arduino\GIT\ardupilot\libraries\GCS_MAVLink;C:\develop\Arduino\GIT\ardupilot\libraries\GCS_MAVLink\utility;C:\develop\Arduino\GIT\ardupilot\libraries\AP_GPS;C:\develop\Arduino\GIT\ardupilot\libraries\AP_GPS\utility;C:\develop\Arduino\GIT\ardupilot\libraries\DataFlash;C:\develop\Arduino\GIT\ardupilot\libraries\DataFlash\utility;C:\develop\Arduino\GIT\ardupilot\libraries\AP_ADC;C:\develop\Arduino\GIT\ardupilot\libraries\AP_ADC\utility;C:\develop\Arduino\GIT\ardupilot\libraries\AP_ADC_AnalogSource;C:\develop\Arduino\GIT\ardupilot\libraries\AP_ADC_AnalogSource\utility;C:\develop\Arduino\GIT\ardupilot\libraries\AP_Baro;C:\develop\Arduino\GIT\ardupilot\libraries\AP_Baro\utility;C:\develop\Arduino\GIT\ardupilot\libraries\AP_Compass;C:\develop\Arduino\GIT\ardupilot\libraries\AP_Compass\utility;C:\develop\Arduino\GIT\ardupilot\libraries\AP_Math;C:\develop\Arduino\GIT\ardupilot\libraries\AP_Math\utility;C:\develop\Arduino\GIT\ardupilot\libraries\AP_Curve;C:\develop\Arduino\GIT\ardupilot\libraries\AP_Curve\utility;C:\develop\Arduino\GIT\ardupilot\libraries\AP_InertialSensor;C:\develop\Arduino\GIT\ardupilot\libraries\AP_InertialSensor\utility;C:\develop\Arduino\GIT\ardupilot\libraries\AP_AHRS;C:\develop\Arduino\GIT\ardupilot\libraries\AP_AHRS\utility;C:\develop\Arduino\GIT\ardupilot\libraries\APM_PI;C:\develop\Arduino\GIT\ardupilot\libraries\APM_PI\utility;C:\develop\Arduino\GIT\ardupilot\libraries\AC_PID;C:\develop\Arduino\GIT\ardupilot\libraries\AC_PID\utility;C:\develop\Arduino\GIT\ardupilot\libraries\RC_Channel;C:\develop\Arduino\GIT\ardupilot\libraries\RC_Channel\utility;C:\develop\Arduino\GIT\ardupilot\libraries\AP_Motors;C:\develop\Arduino\GIT\ardupilot\libraries\AP_Motors\utility;C:\develop\Arduino\GIT\ardupilot\libraries\AP_RangeFinder;C:\develop\Arduino\GIT\ardupilot\libraries\AP_RangeFinder\utility;C:\develop\Arduino\GIT\ardupilot\libraries\AP_OpticalFlow;C:\develop\Arduino\GIT\ardupilot\libraries\AP_OpticalFlow\utility;C:\develop\Arduino\GIT\ardupilot\libraries\Filter;C:\develop\Arduino\GIT\ardupilot\libraries\Filter\utility;C:\develop\Arduino\GIT\ardupilot\libraries\AP_Buffer;C:\develop\Arduino\GIT\ardupilot\libraries\AP_Buffer\utility;C:\develop\Arduino\GIT\ardupilot\libraries\AP_Relay;C:\develop\Arduino\GIT\ardupilot\libraries\AP_Relay\utility;C:\develop\Arduino\GIT\ardupilot\libraries\AP_ServoRelayEvents;C:\develop\Arduino\GIT\ardupilot\libraries\AP_ServoRelayEvents\utility;C:\develop\Arduino\GIT\ardupilot\libraries\AP_Camera;C:\develop\Arduino\GIT\ardupilot\libraries\AP_Camera\utility;C:\develop\Arduino\GIT\ardupilot\libraries\AP_Mount;C:\develop\Arduino\GIT\ardupilot\libraries\AP_Mount\utility;C:\develop\Arduino\GIT\ardupilot\libraries\AP_Airspeed;C:\develop\Arduino\GIT\ardupilot\libraries\AP_Airspeed\utility;C:\develop\Arduino\GIT\ardupilot\libraries\AP_Vehicle;C:\develop\Arduino\GIT\ardupilot\libraries\AP_Vehicle\utility;C:\develop\Arduino\GIT\ardupilot\libraries\AP_InertialNav;C:\develop\Arduino\GIT\ardupilot\libraries\AP_InertialNav\utility;C:\develop\Arduino\GIT\ardupilot\libraries\AC_WPNav;C:\develop\Arduino\GIT\ardupilot\libraries\AC_WPNav\utility;C:\develop\Arduino\GIT\ardupilot\libraries\AP_Declination;C:\develop\Arduino\GIT\ardupilot\libraries\AP_Declination\utility;C:\develop\Arduino\GIT\ardupilot\libraries\AC_Fence;C:\develop\Arduino\GIT\ardupilot\libraries\AC_Fence\utility;C:\develop\Arduino\GIT\ardupilot\libraries\SITL;C:\develop\Arduino\GIT\ardupilot\libraries\SITL\utility;C:\develop\Arduino\GIT\ardupilot\libraries\AP_Scheduler;C:\develop\Arduino\GIT\ardupilot\libraries\AP_Scheduler\utility;C:\develop\Arduino\GIT\ardupilot\libraries\AP_RCMapper;C:\develop\Arduino\GIT\ardupilot\libraries\AP_RCMapper\utility;C:\develop\Arduino\GIT\ardupilot\libraries\AP_Notify;C:\develop\Arduino\GIT\ardupilot\libraries\AP_Notify\utility;C:\develop\Arduino\GIT\ardupilot\libraries\AP_BattMonitor;C:\develop\Arduino\GIT\ardupilot\libraries\AP_BattMonitor\utility;C:\develop\Arduino\GIT\ardupilot\libraries\AP_BoardConfig;C:\develop\Arduino\GIT\ardupilot\libraries\AP_BoardConfig\utility;C:\develop\Arduino\GIT\ardupilot\libraries\AC_Sprayer;C:\develop\Arduino\GIT\ardupilot\libraries\AC_Sprayer\utility;C:\develop\Arduino\GIT\ardupilot\libraries\AP_EPM;C:\develop\Arduino\GIT\ardupilot\libraries\AP_EPM\utility;C:\Program Files (x86)\Arduino-1.0.3apm\libraries;C:\Program Files (x86)\Arduino-1.0.3apm\hardware\apm\libraries;C:\Program Files (x86)\Visual Micro\Visual Micro for Arduino\Micro Platforms\default\debuggers;C:\develop\Arduino\GIT\ardupilot\libraries;c:\program files (x86)\arduino-1.0.3apm\hardware\tools\avr\avr\include\;c:\program files (x86)\arduino-1.0.3apm\hardware\tools\avr\avr\include\avr\;c:\program files (x86)\arduino-1.0.3apm\hardware\tools\avr\avr\;c:\program files (x86)\arduino-1.0.3apm\hardware\tools\avr\lib\gcc\avr\4.3.2\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>C:\develop\Arduino\GIT\ardupilot\ArduCopter\Visual Micro\.ArduCopter.vsarduino.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
+      <PreprocessorDefinitions>__AVR_ATmega1280__;ARDUINO=101;ARDUINO_MAIN;__AVR__;__avr__;F_CPU=16000000L;__cplusplus;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <AdditionalIncludeDirectories>C:\develop\Arduino\GIT\ardupilot\libraries\AP_Common;C:\develop\Arduino\GIT\ardupilot\libraries\AP_Common\utility;C:\develop\Arduino\GIT\ardupilot\libraries\AP_Progmem;C:\develop\Arduino\GIT\ardupilot\libraries\AP_Progmem\utility;C:\develop\Arduino\GIT\ardupilot\libraries\AP_Menu;C:\develop\Arduino\GIT\ardupilot\libraries\AP_Menu\utility;C:\develop\Arduino\GIT\ardupilot\libraries\AP_Param;C:\develop\Arduino\GIT\ardupilot\libraries\AP_Param\utility;C:\develop\Arduino\GIT\ardupilot\libraries\AP_HAL;C:\develop\Arduino\GIT\ardupilot\libraries\AP_HAL\utility;C:\develop\Arduino\GIT\ardupilot\libraries\AP_HAL_AVR;C:\develop\Arduino\GIT\ardupilot\libraries\AP_HAL_AVR\utility;C:\develop\Arduino\GIT\ardupilot\libraries\AP_HAL_AVR_SITL;C:\develop\Arduino\GIT\ardupilot\libraries\AP_HAL_AVR_SITL\utility;C:\develop\Arduino\GIT\ardupilot\libraries\AP_HAL_PX4;C:\develop\Arduino\GIT\ardupilot\libraries\AP_HAL_PX4\utility;C:\develop\Arduino\GIT\ardupilot\libraries\AP_HAL_FLYMAPLE;C:\develop\Arduino\GIT\ardupilot\libraries\AP_HAL_FLYMAPLE\utility;C:\develop\Arduino\GIT\ardupilot\libraries\AP_HAL_Linux;C:\develop\Arduino\GIT\ardupilot\libraries\AP_HAL_Linux\utility;C:\develop\Arduino\GIT\ardupilot\libraries\AP_HAL_Empty;C:\develop\Arduino\GIT\ardupilot\libraries\AP_HAL_Empty\utility;C:\develop\Arduino\GIT\ardupilot\libraries\GCS_MAVLink;C:\develop\Arduino\GIT\ardupilot\libraries\GCS_MAVLink\utility;C:\develop\Arduino\GIT\ardupilot\libraries\AP_GPS;C:\develop\Arduino\GIT\ardupilot\libraries\AP_GPS\utility;C:\develop\Arduino\GIT\ardupilot\libraries\DataFlash;C:\develop\Arduino\GIT\ardupilot\libraries\DataFlash\utility;C:\develop\Arduino\GIT\ardupilot\libraries\AP_ADC;C:\develop\Arduino\GIT\ardupilot\libraries\AP_ADC\utility;C:\develop\Arduino\GIT\ardupilot\libraries\AP_ADC_AnalogSource;C:\develop\Arduino\GIT\ardupilot\libraries\AP_ADC_AnalogSource\utility;C:\develop\Arduino\GIT\ardupilot\libraries\AP_Baro;C:\develop\Arduino\GIT\ardupilot\libraries\AP_Baro\utility;C:\develop\Arduino\GIT\ardupilot\libraries\AP_Compass;C:\develop\Arduino\GIT\ardupilot\libraries\AP_Compass\utility;C:\develop\Arduino\GIT\ardupilot\libraries\AP_Math;C:\develop\Arduino\GIT\ardupilot\libraries\AP_Math\utility;C:\develop\Arduino\GIT\ardupilot\libraries\AP_Curve;C:\develop\Arduino\GIT\ardupilot\libraries\AP_Curve\utility;C:\develop\Arduino\GIT\ardupilot\libraries\AP_InertialSensor;C:\develop\Arduino\GIT\ardupilot\libraries\AP_InertialSensor\utility;C:\develop\Arduino\GIT\ardupilot\libraries\AP_AHRS;C:\develop\Arduino\GIT\ardupilot\libraries\AP_AHRS\utility;C:\develop\Arduino\GIT\ardupilot\libraries\APM_PI;C:\develop\Arduino\GIT\ardupilot\libraries\APM_PI\utility;C:\develop\Arduino\GIT\ardupilot\libraries\AC_PID;C:\develop\Arduino\GIT\ardupilot\libraries\AC_PID\utility;C:\develop\Arduino\GIT\ardupilot\libraries\RC_Channel;C:\develop\Arduino\GIT\ardupilot\libraries\RC_Channel\utility;C:\develop\Arduino\GIT\ardupilot\libraries\AP_Motors;C:\develop\Arduino\GIT\ardupilot\libraries\AP_Motors\utility;C:\develop\Arduino\GIT\ardupilot\libraries\AP_RangeFinder;C:\develop\Arduino\GIT\ardupilot\libraries\AP_RangeFinder\utility;C:\develop\Arduino\GIT\ardupilot\libraries\AP_OpticalFlow;C:\develop\Arduino\GIT\ardupilot\libraries\AP_OpticalFlow\utility;C:\develop\Arduino\GIT\ardupilot\libraries\Filter;C:\develop\Arduino\GIT\ardupilot\libraries\Filter\utility;C:\develop\Arduino\GIT\ardupilot\libraries\AP_Buffer;C:\develop\Arduino\GIT\ardupilot\libraries\AP_Buffer\utility;C:\develop\Arduino\GIT\ardupilot\libraries\AP_Relay;C:\develop\Arduino\GIT\ardupilot\libraries\AP_Relay\utility;C:\develop\Arduino\GIT\ardupilot\libraries\AP_ServoRelayEvents;C:\develop\Arduino\GIT\ardupilot\libraries\AP_ServoRelayEvents\utility;C:\develop\Arduino\GIT\ardupilot\libraries\AP_Camera;C:\develop\Arduino\GIT\ardupilot\libraries\AP_Camera\utility;C:\develop\Arduino\GIT\ardupilot\libraries\AP_Mount;C:\develop\Arduino\GIT\ardupilot\libraries\AP_Mount\utility;C:\develop\Arduino\GIT\ardupilot\libraries\AP_Airspeed;C:\develop\Arduino\GIT\ardupilot\libraries\AP_Airspeed\utility;C:\develop\Arduino\GIT\ardupilot\libraries\AP_Vehicle;C:\develop\Arduino\GIT\ardupilot\libraries\AP_Vehicle\utility;C:\develop\Arduino\GIT\ardupilot\libraries\AP_InertialNav;C:\develop\Arduino\GIT\ardupilot\libraries\AP_InertialNav\utility;C:\develop\Arduino\GIT\ardupilot\libraries\AC_WPNav;C:\develop\Arduino\GIT\ardupilot\libraries\AC_WPNav\utility;C:\develop\Arduino\GIT\ardupilot\libraries\AP_Declination;C:\develop\Arduino\GIT\ardupilot\libraries\AP_Declination\utility;C:\develop\Arduino\GIT\ardupilot\libraries\AC_Fence;C:\develop\Arduino\GIT\ardupilot\libraries\AC_Fence\utility;C:\develop\Arduino\GIT\ardupilot\libraries\SITL;C:\develop\Arduino\GIT\ardupilot\libraries\SITL\utility;C:\develop\Arduino\GIT\ardupilot\libraries\AP_Scheduler;C:\develop\Arduino\GIT\ardupilot\libraries\AP_Scheduler\utility;C:\develop\Arduino\GIT\ardupilot\libraries\AP_RCMapper;C:\develop\Arduino\GIT\ardupilot\libraries\AP_RCMapper\utility;C:\develop\Arduino\GIT\ardupilot\libraries\AP_Notify;C:\develop\Arduino\GIT\ardupilot\libraries\AP_Notify\utility;C:\develop\Arduino\GIT\ardupilot\libraries\AP_BattMonitor;C:\develop\Arduino\GIT\ardupilot\libraries\AP_BattMonitor\utility;C:\develop\Arduino\GIT\ardupilot\libraries\AP_BoardConfig;C:\develop\Arduino\GIT\ardupilot\libraries\AP_BoardConfig\utility;C:\develop\Arduino\GIT\ardupilot\libraries\AC_Sprayer;C:\develop\Arduino\GIT\ardupilot\libraries\AC_Sprayer\utility;C:\develop\Arduino\GIT\ardupilot\libraries\AP_EPM;C:\develop\Arduino\GIT\ardupilot\libraries\AP_EPM\utility;C:\Program Files (x86)\Arduino-1.0.3apm\libraries;C:\Program Files (x86)\Arduino-1.0.3apm\hardware\apm\libraries;C:\Program Files (x86)\Visual Micro\Visual Micro for Arduino\Micro Platforms\default\debuggers;C:\develop\Arduino\GIT\ardupilot\libraries;c:\program files (x86)\arduino-1.0.3apm\hardware\tools\avr\avr\include\;c:\program files (x86)\arduino-1.0.3apm\hardware\tools\avr\avr\include\avr\;c:\program files (x86)\arduino-1.0.3apm\hardware\tools\avr\avr\;c:\program files (x86)\arduino-1.0.3apm\hardware\tools\avr\lib\gcc\avr\4.3.2\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>C:\develop\Arduino\GIT\ardupilot\ArduCopter\Visual Micro\.ArduCopter.vsarduino.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
+      <PreprocessorDefinitions>__AVR_ATmega2560__;ARDUINO=101;ARDUINO_MAIN;__AVR__;__avr__;F_CPU=16000000L;__cplusplus;CONFIG_HAL_BOARD=HAL_BOARD_APM2;EXCLUDECORE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <None Include="AP_State.pde">
+      <FileType>CppCode</FileType>
+    </None>
+    <None Include="ArduCopter.pde">
+      <FileType>CppCode</FileType>
+    </None>
+    <None Include="Attitude.pde">
+      <FileType>CppCode</FileType>
+    </None>
+    <None Include="auto_tune.pde">
+      <FileType>CppCode</FileType>
+    </None>
+    <None Include="commands.pde">
+      <FileType>CppCode</FileType>
+    </None>
+    <None Include="commands_logic.pde">
+      <FileType>CppCode</FileType>
+    </None>
+    <None Include="commands_process.pde">
+      <FileType>CppCode</FileType>
+    </None>
+    <None Include="compat.pde">
+      <FileType>CppCode</FileType>
+    </None>
+    <None Include="control_modes.pde">
+      <FileType>CppCode</FileType>
+    </None>
+    <None Include="crash_check.pde">
+      <FileType>CppCode</FileType>
+    </None>
+    <None Include="drift.pde">
+      <FileType>CppCode</FileType>
+    </None>
+    <None Include="events.pde">
+      <FileType>CppCode</FileType>
+    </None>
+    <None Include="failsafe.pde">
+      <FileType>CppCode</FileType>
+    </None>
+    <None Include="fence.pde">
+      <FileType>CppCode</FileType>
+    </None>
+    <None Include="flip.pde">
+      <FileType>CppCode</FileType>
+    </None>
+    <None Include="GCS_Mavlink.pde">
+      <FileType>CppCode</FileType>
+    </None>
+    <None Include="heli.pde">
+      <FileType>CppCode</FileType>
+    </None>
+    <None Include="inertia.pde">
+      <FileType>CppCode</FileType>
+    </None>
+    <None Include="leds.pde">
+      <FileType>CppCode</FileType>
+    </None>
+    <None Include="Log.pde">
+      <FileType>CppCode</FileType>
+    </None>
+    <None Include="motors.pde">
+      <FileType>CppCode</FileType>
+    </None>
+    <None Include="navigation.pde">
+      <FileType>CppCode</FileType>
+    </None>
+    <None Include="Parameters.pde">
+      <FileType>CppCode</FileType>
+    </None>
+    <None Include="perf_info.pde">
+      <FileType>CppCode</FileType>
+    </None>
+    <None Include="position_vector.pde">
+      <FileType>CppCode</FileType>
+    </None>
+    <None Include="radio.pde">
+      <FileType>CppCode</FileType>
+    </None>
+    <None Include="sensors.pde">
+      <FileType>CppCode</FileType>
+    </None>
+    <None Include="setup.pde">
+      <FileType>CppCode</FileType>
+    </None>
+    <None Include="system.pde">
+      <FileType>CppCode</FileType>
+    </None>
+    <None Include="test.pde">
+      <FileType>CppCode</FileType>
+    </None>
+    <None Include="UserCode.pde">
+      <FileType>CppCode</FileType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="APM_Config.h">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="APM_Config_mavlink_hil.h">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="compat.h">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="config.h">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="config_channels.h">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="defines.h">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="Parameters.h">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="UserVariables.h">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="Visual Micro\.ArduCopter.vsarduino.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties arduino.board.name="apm2_2560HAL" arduino.board.desc="Arduino Mega 2560 HAL (Apm 2)" arduino.board.property_bag="name=Arduino Mega 2560 HAL (Apm 2)&#xD;&#xA;upload.protocol=wiring&#xD;&#xA;upload.maximum_size=258048&#xD;&#xA;upload.speed=115200&#xD;&#xA;bootloader.low_fuses=0xFF&#xD;&#xA;bootloader.high_fuses=0xD8&#xD;&#xA;bootloader.extended_fuses=0xFD&#xD;&#xA;bootloader.path=stk500v2&#xD;&#xA;bootloader.file=stk500boot_v2_mega2560.hex&#xD;&#xA;bootloader.unlock_bits=0x3F&#xD;&#xA;bootloader.lock_bits=0x0F&#xD;&#xA;build.mcu=atmega2560&#xD;&#xA;build.f_cpu=16000000L&#xD;&#xA;build.nocore=true&#xD;&#xA;build.noarchive=true&#xD;&#xA;build.option1=-mcall-prologues&#xD;&#xA;build.option2=-DCONFIG_HAL_BOARD=HAL_BOARD_APM2&#xD;&#xA;build.option3=-DEXCLUDECORE&#xD;&#xA;build.linkoption1=-mcall-prologues&#xD;&#xA;runtime.ide.path=C:\Program Files (x86)\Arduino-1.0.3apm&#xD;&#xA;build.system.path=C:\Program Files (x86)\Arduino-1.0.3apm\hardware\apm\system&#xD;&#xA;runtime.ide.version=101&#xD;&#xA;originalid=apm2_2560HAL&#xD;&#xA;vm.platform.root.path=C:\Program Files (x86)\Visual Micro\Visual Micro for Arduino\Micro Platforms\arduino10x&#xD;&#xA;vm.core.include=wprogram.h&#xD;&#xA;ide.hint=Arduino 0023 and 1.0.x Ide&#xD;&#xA;ide.location.key=Arduino&#xD;&#xA;ide.location.ide.winreg=Arduino 1.0.x Application&#xD;&#xA;ide.location.sketchbook.winreg=Arduino 1.0.x Sketchbook&#xD;&#xA;ide.location.sketchbook.preferences=sketchbook.path&#xD;&#xA;ide.location.sketchbook.default=%MYDOCUMENTS%\arduino&#xD;&#xA;ide.location.preferences=%VM_APPDATA_ROAMING%\arduino\preferences.txt&#xD;&#xA;ide.default.package=arduino&#xD;&#xA;ide.default.platform=avr&#xD;&#xA;ide.multiplatform=true&#xD;&#xA;ide.includes=arduino.h&#xD;&#xA;ide.platformswithoutpackage=true&#xD;&#xA;ide.includes.fallback=wprogram.h&#xD;&#xA;ide.extension=ino&#xD;&#xA;ide.extension.fallback=pde&#xD;&#xA;ide.versionLTEQ=149&#xD;&#xA;ide.exe=arduino.exe&#xD;&#xA;ide.hosts=atmel&#xD;&#xA;ide.url=http://arduino.cc/en/Main/Software&#xD;&#xA;vm.debug=true&#xD;&#xA;software=ARDUINO&#xD;&#xA;ide.appid=arduino10x&#xD;&#xA;location.sketchbook=C:\develop\Arduino\GIT\ardupilot&#xD;&#xA;build.board=AVR_APM2_2560HAL&#xD;&#xA;vm.boardsource.path=C:\Program Files (x86)\Arduino-1.0.3apm\hardware\apm&#xD;&#xA;vm.platformname.name=avr&#xD;&#xA;build.arch=AVR&#xD;&#xA;" arduino.build.mcu="atmega2560" arduino.build.f_cpu="16000000L" arduino.build.core="" arduino.upload.protocol="wiring" arduino.upload.speed="115200" arduino.upload.maximum_size="258048" visualmicro.application.name="arduino10x" visualmicro.package.name="apm" visualmicro.platform.name="avr" />
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>
