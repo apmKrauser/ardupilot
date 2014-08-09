@@ -93,7 +93,7 @@ void pack_msg_for_Nano()
     if (nano_frontlight_auto) ap_bitflags |= (1 << 2);
     if (nano_frontlight_on) ap_bitflags |= (1 << 3);
 	alt_by_sonar = (uint16_t) sonar_alt;
-	alt_over_home = (uint16_t) (( current_loc.alt - ahrs.get_home().alt ) / 100);
+    alt_over_home = (uint16_t) (( current_loc.alt - home.alt ) / 100);
 	msg_toNano[0] = 0xFF;
 	msg_toNano[1] = ap_bitflags;
 	msg_toNano[2] = (uint8_t) (alt_by_sonar & 0x00FF);
