@@ -64,3 +64,9 @@ serialsent.raw
 status.txt
 tags
 test.ArduCopter/*
+*.vcxproj
+ArduCopter/ArduCopter.vcxproj.filters
+ArduCopter/Visual Micro/.ArduCopter.vsarduino.h
+ArduCopter/Visual Micro/Compile.vmps.xml
+ArduCopter/Visual Micro/Configuration.Release.vmps.xml
+ArduCopter/Visual Micro/Upload.vmps.xml

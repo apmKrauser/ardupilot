@@ -690,6 +690,14 @@ static bool mavlink_try_send_message(mavlink_channel_t chan, enum ap_message id,
     case MSG_RANGEFINDER:
         // unused
         break;
+        
+    case MSG_RPM_SENSOR:
+        CHECK_PAYLOAD_SIZE(RPM_SENSOR);
+        mavlink_msg_rpm_sensor_send(chan, remote_RPM);
+        // debug: send it twice as int val    
+        mavlink_msg_named_value_int_send(chan, millis(), "RPM Sensor", remote_RPM);
+        //mavlink_msg_named_value_float_send(chan, mavlink_msg_debug_get_time_boot_ms
+        break;        
 
     case MSG_RETRY_DEFERRED:
         break; // just here to prevent a warning
@@ -1043,6 +1051,7 @@ GCS_MAVLINK::data_stream_send(void)
         send_message(MSG_AHRS);
         send_message(MSG_HWSTATUS);
         send_message(MSG_SYSTEM_TIME);
+        send_message(MSG_RPM_SENSOR);
     }
 }
 
@@ -1246,7 +1255,12 @@ void GCS_MAVLINK::handleMessage(mavlink_message_t* msg)
                 result = MAV_RESULT_ACCEPTED;
             }
             break;
-
+            
+        case MAV_CMD_FRONTLIGHT:
+            nano_frontlight_auto = (packet.param1 == 2)?1:0;
+            nano_frontlight_on = (packet.param1 == 1)?1:0;
+            result = MAV_RESULT_ACCEPTED;
+            break;            
 
         default:
             result = MAV_RESULT_UNSUPPORTED;
