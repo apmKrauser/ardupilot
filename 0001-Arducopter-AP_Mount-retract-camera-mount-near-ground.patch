@@ -1,0 +1,217 @@
+From 9d6297a5530037b948ffd958681a80eb15c3e955 Mon Sep 17 00:00:00 2001
+From: apmKrauser <grundig2000@gmx.de>
+Date: Sun, 6 Jul 2014 02:12:47 +0200
+Subject: [PATCH] Arducopter/AP_Mount: retract camera mount near ground
+
+---
+ ArduCopter/APM_Config.h         |  2 ++
+ ArduCopter/ArduCopter.pde       | 38 +++++++++++++++++++++++++++++++++++++-
+ ArduCopter/Parameters.h         |  3 +++
+ ArduCopter/Parameters.pde       |  8 ++++++++
+ ArduCopter/defines.h            |  3 +++
+ Tools/GIT_Test/GIT_Success.txt  |  1 +
+ libraries/AP_Mount/AP_Mount.cpp | 34 ++++++++++++++++++++++++++++++++++
+ libraries/AP_Mount/AP_Mount.h   |  2 ++
+ 8 files changed, 90 insertions(+), 1 deletion(-)
+
+diff --git a/ArduCopter/APM_Config.h b/ArduCopter/APM_Config.h
+index 28b96b7..f2fd7bc 100644
+--- a/ArduCopter/APM_Config.h
++++ b/ArduCopter/APM_Config.h
+@@ -5,6 +5,7 @@
+ // If you used to define your CONFIG_APM_HARDWARE setting here, it is no longer
+ // valid! You should switch to using a HAL_BOARD flag in your local config.mk.
+ 
++
+ //#define FRAME_CONFIG QUAD_FRAME
+ /*  options:
+  *  QUAD_FRAME
+@@ -38,6 +39,7 @@
+ //#define OPTFLOW               ENABLED             // enable optical flow sensor and OF_LOITER flight mode at a cost of 5K of flash space
+ //#define SPRAYER               ENABLED             // enable the crop sprayer feature (two ESC controlled pumps the speed of which depends upon the vehicle's horizontal velocity)
+ //#define EPM_ENABLED           ENABLED             // enable epm cargo gripper costs 500bytes of flash
++#define MNT_AUTO_RETRACT      ENABLED             // enable automatic retracting of camera mount
+ 
+ // other settings
+ //#define THROTTLE_IN_DEADBAND   100                // redefine size of throttle deadband in pwm (0 ~ 1000)
+diff --git a/ArduCopter/ArduCopter.pde b/ArduCopter/ArduCopter.pde
+index 4fb1567..e69b4d9 100644
+--- a/ArduCopter/ArduCopter.pde
++++ b/ArduCopter/ArduCopter.pde
+@@ -1028,7 +1028,43 @@ static void update_mount()
+ #if MOUNT == ENABLED
+     // update camera mount's position
+     camera_mount.update_mount_position();
+-#endif
++    
++    // lasts < 10 us on APM2
++    // automatically retract camera mount before hitting the ground
++#if CONFIG_SONAR == ENABLED
++#if MNT_AUTO_RETRACT == ENABLED  
++    if ( (g.mnt_autortrct_h > 0) && (g.sonar_enabled) )  // mnt_autortrct_h = 0 to disable auto retract  
++    {
++        // retract mount if approaching the ground
++        if ((sonar_alt < g.mnt_autortrct_h) && (sonar_alt_health >= SONAR_ALT_HEALTH_MAX))
++        {   
++            camera_mount.auto_retract(true);
++        }
++
++        // move out again if we're flying higher
++        switch (control_mode) 
++        {
++        case STABILIZE:
++        case RTL:
++        case LAND:
++            break;
++
++        default:   
++            //  move out only when not in stabilize, rtl, land 
++            //  sonar reports wrong alt after landing on lawn
++            if (sonar_alt_health < SONAR_ALT_HEALTH_MAX) break;
++            if (sonar_alt > (g.mnt_autortrct_h + 100))
++            {
++                // return to previous position
++                camera_mount.auto_retract(false);
++            }
++            break;
++        } // switch
++    } // (g.mnt_autortrct_h > 0)  
++#endif // MNT_AUTO_RETRACT     
++#endif // CONFIG_SONAR
++
++#endif // MOUNT
+ 
+ #if MOUNT2 == ENABLED
+     // update camera mount's position
+diff --git a/ArduCopter/Parameters.h b/ArduCopter/Parameters.h
+index 771f3d5..abb1707 100644
+--- a/ArduCopter/Parameters.h
++++ b/ArduCopter/Parameters.h
+@@ -115,6 +115,7 @@ public:
+         k_param_serial0_baud,
+         k_param_serial1_baud,
+         k_param_serial2_baud,
++        k_param_mnt_autortrct_h,
+ 
+         // 65: AP_Limits Library
+         k_param_limits = 65,            // deprecated - remove
+@@ -383,6 +384,8 @@ public:
+     AP_Int8         ch7_option;
+     AP_Int8         ch8_option;
+     AP_Int8         arming_check;
++    AP_Int8         mnt_autortrct_h;
++
+ 
+ #if FRAME_CONFIG ==     HELI_FRAME
+     // Heli
+diff --git a/ArduCopter/Parameters.pde b/ArduCopter/Parameters.pde
+index f772792..494cfab 100644
+--- a/ArduCopter/Parameters.pde
++++ b/ArduCopter/Parameters.pde
+@@ -574,6 +574,14 @@ const AP_Param::Info var_info[] PROGMEM = {
+     // @Values: 0:Disabled,1:Leveling,2:Leveling and Limited
+     // @User: Advanced
+     GSCALAR(acro_trainer,   "ACRO_TRAINER",     ACRO_TRAINER_LIMITED),
++    
++    
++    // @Param: MNT_AUTORTRCT_H
++    // @DisplayName: Mnt AutoRetract Hight
++    // @Description: retract camera mount below this hight(cm) (stabilize/land/rtl mode)
++    // @User: Standard
++    // @Range: 0 255
++    GSCALAR(mnt_autortrct_h, "MNT_AUTORTRCT_H", MNT_AUTORTRCT_H),    
+ 
+     // PID controller
+     //---------------
+diff --git a/ArduCopter/defines.h b/ArduCopter/defines.h
+index 959b1be..2b89c60 100644
+--- a/ArduCopter/defines.h
++++ b/ArduCopter/defines.h
+@@ -401,4 +401,7 @@ enum FlipState {
+ #define FS_GPS_ALTHOLD                      2       // switch to ALTHOLD mode on GPS failsafe
+ #define FS_GPS_LAND_EVEN_STABILIZE          3       // switch to LAND mode on GPS failsafe even if in a manual flight mode like Stabilize
+ 
++// Camera mount
++#define MNT_AUTORTRCT_H 100 // cm
++
+ #endif // _DEFINES_H
+diff --git a/Tools/GIT_Test/GIT_Success.txt b/Tools/GIT_Test/GIT_Success.txt
+index 7aeece4..68b345b 100644
+--- a/Tools/GIT_Test/GIT_Success.txt
++++ b/Tools/GIT_Test/GIT_Success.txt
+@@ -16,3 +16,4 @@ Phil Rowse was here :)
+ Nils Högberg (Vizual54) testing
+ Linus Penzlien 
+ Hazy
++Matthias Krause cloned here
+diff --git a/libraries/AP_Mount/AP_Mount.cpp b/libraries/AP_Mount/AP_Mount.cpp
+index 5f30de0..65774bd 100644
+--- a/libraries/AP_Mount/AP_Mount.cpp
++++ b/libraries/AP_Mount/AP_Mount.cpp
+@@ -15,12 +15,17 @@
+  # define MNT_GPSPOINT_OPTION    ENABLED // Point the mount to a GPS point defined via a mouse click in the Mission Planner GUI
+  # define MNT_STABILIZE_OPTION  DISABLED // stabilize camera using frame attitude information
+  # define MNT_MOUNT2_OPTION     DISABLED // second mount, can for example be used to keep an antenna pointed at the home position
++ # define MNT_AUTO_RETRACT      DISABLED // automatic retracting of camera mount when at low alt in stabilize, rtl, land
++ # define MNT_AUTO_MOVEOUT      DISABLED // automatic mount move out at certain altitude when not in stabilize, rtl, land
++
+ #else
+  # define MNT_JSTICK_SPD_OPTION ENABLED // uses  844 bytes of memory
+  # define MNT_RETRACT_OPTION    ENABLED // uses  244 bytes of memory
+  # define MNT_GPSPOINT_OPTION   ENABLED // uses  580 bytes of memory
+  # define MNT_STABILIZE_OPTION  ENABLED // uses 2424 bytes of memory
+  # define MNT_MOUNT2_OPTION     ENABLED // uses   58 bytes of memory (must also be enabled in APM_Config.h)
++ # define MNT_AUTO_RETRACT      ENABLED // (must also be enabled in APM_Config.h)            
++ # define MNT_AUTO_MOVEOUT      ENABLED  
+ #endif
+ 
+ const AP_Param::GroupInfo AP_Mount::var_info[] PROGMEM = {
+@@ -690,3 +695,32 @@ AP_Mount::move_servo(uint8_t function_idx, int16_t angle, int16_t angle_min, int
+ 	int16_t servo_out = closest_limit(angle, &angle_min, &angle_max);
+ 	RC_Channel_aux::move_servo((RC_Channel_aux::Aux_servo_function_t)function_idx, servo_out, angle_min, angle_max);
+ }
++
++
++/// true = retract camera mount; false = move out
++void 
++AP_Mount::auto_retract(bool retract_mount)
++{
++#if MNT_AUTO_RETRACT == ENABLED
++    static enum MAV_MOUNT_MODE usr_last_mmode = MAV_MOUNT_MODE_RC_TARGETING;
++
++    if (retract_mount)  // retract camera mount 
++    {
++        if ((enum MAV_MOUNT_MODE)_mount_mode.get() != MAV_MOUNT_MODE_RETRACT) {
++            usr_last_mmode = (enum MAV_MOUNT_MODE)_mount_mode.get();
++            set_mode(MAV_MOUNT_MODE_RETRACT);
++        }
++    }
++#if MNT_AUTO_MOVEOUT == ENABLED
++    else
++    {
++        if ((enum MAV_MOUNT_MODE)_mount_mode.get() == MAV_MOUNT_MODE_RETRACT)
++        {   // return to previous position ( move out camera mount )
++            set_mode(usr_last_mmode);
++        }
++    }
++#endif
++
++#endif
++}
++
+diff --git a/libraries/AP_Mount/AP_Mount.h b/libraries/AP_Mount/AP_Mount.h
+index 1ea8da1..ab95afb 100644
+--- a/libraries/AP_Mount/AP_Mount.h
++++ b/libraries/AP_Mount/AP_Mount.h
+@@ -61,6 +61,8 @@ public:
+     void                    update_mount_position();
+     void                    update_mount_type(); ///< Auto-detect the mount gimbal type depending on the functions assigned to the servos
+     void                    debug_output();      ///< For testing and development. Called in the medium loop.
++    void                    auto_retract(bool retract_mount);  
++
+     // Accessors
+     enum MountType          get_mount_type() {
+         return _mount_type;
+-- 
+1.8.4.msysgit.0
+

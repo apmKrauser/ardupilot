@@ -1,0 +1,308 @@
+From b82f2c505f5c80f36d478935f5c8d1259143e14d Mon Sep 17 00:00:00 2001
+From: apmKrauser <grundig2000@gmx.de>
+Date: Fri, 18 Jul 2014 02:23:23 +0200
+Subject: [PATCH] ap_nano_p
+
+---
+ .gitignore                                         |  6 ++
+ ArduCopter/APM_Config.h                            | 15 +++--
+ ArduCopter/GCS_Mavlink.pde                         | 19 ++++++-
+ ArduCopter/UserCode.pde                            | 65 +++++++++++++++++++++-
+ ArduCopter/UserVariables.h                         | 17 ++++++
+ libraries/GCS_MAVLink/GCS.h                        |  1 +
+ .../message_definitions/ardupilotmega.xml          |  1 +
+ .../GCS_MAVLink/message_definitions/expansion.xml  | 25 +++++++++
+ 8 files changed, 141 insertions(+), 8 deletions(-)
+ create mode 100644 libraries/GCS_MAVLink/message_definitions/expansion.xml
+
+diff --git a/.gitignore b/.gitignore
+index a330e77..3b7c733 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -74,3 +74,9 @@ serialsent.raw
+ status.txt
+ tags
+ test.ArduCopter/*
++*.vcxproj
++ArduCopter/ArduCopter.vcxproj.filters
++ArduCopter/Visual Micro/.ArduCopter.vsarduino.h
++ArduCopter/Visual Micro/Compile.vmps.xml
++ArduCopter/Visual Micro/Configuration.Release.vmps.xml
++ArduCopter/Visual Micro/Upload.vmps.xml
+diff --git a/ArduCopter/APM_Config.h b/ArduCopter/APM_Config.h
+index f2fd7bc..0eeb71a 100644
+--- a/ArduCopter/APM_Config.h
++++ b/ArduCopter/APM_Config.h
+@@ -5,7 +5,10 @@
+ // If you used to define your CONFIG_APM_HARDWARE setting here, it is no longer
+ // valid! You should switch to using a HAL_BOARD flag in your local config.mk.
+ 
+-
++#include "UserVariables.h"
++#define FRAME_CONFIG HELI_FRAME
++//#define LOGGING_ENABLED       DISABLED
++#define CONFIG_SONAR_SOURCE_ANALOG_PIN 5
+ //#define FRAME_CONFIG QUAD_FRAME
+ /*  options:
+  *  QUAD_FRAME
+@@ -24,8 +27,8 @@
+  # define CLI_ENABLED           DISABLED            // disable the CLI (command-line-interface) to save 21K of flash space
+ #endif
+ //#define LOGGING_ENABLED       DISABLED            // disable dataflash logging to save 11K of flash space
+-//#define MOUNT                 DISABLED            // disable the camera gimbal to save 8K of flash space
+-//#define AUTOTUNE_ENABLED      DISABLED            // disable the auto tune functionality to save 7k of flash
++#define MOUNT                 DISABLED            // disable the camera gimbal to save 8K of flash space
++#define AUTOTUNE_ENABLED      DISABLED            // disable the auto tune functionality to save 7k of flash
+ //#define AC_FENCE              DISABLED            // disable fence to save 2k of flash
+ //#define CAMERA                DISABLED            // disable camera trigger to save 1k of flash
+ //#define CONFIG_SONAR          DISABLED            // disable sonar to save 1k of flash
+@@ -39,7 +42,7 @@
+ //#define OPTFLOW               ENABLED             // enable optical flow sensor and OF_LOITER flight mode at a cost of 5K of flash space
+ //#define SPRAYER               ENABLED             // enable the crop sprayer feature (two ESC controlled pumps the speed of which depends upon the vehicle's horizontal velocity)
+ //#define EPM_ENABLED           ENABLED             // enable epm cargo gripper costs 500bytes of flash
+-#define MNT_AUTO_RETRACT      ENABLED             // enable automatic retracting of camera mount
++//#define MNT_AUTO_RETRACT      ENABLED             // enable automatic retracting of camera mount
+ 
+ // other settings
+ //#define THROTTLE_IN_DEADBAND   100                // redefine size of throttle deadband in pwm (0 ~ 1000)
+@@ -51,9 +54,9 @@
+ // Put your variable definitions into the UserVariables.h file (or another file name and then change the #define below).
+ //#define USERHOOK_VARIABLES "UserVariables.h"
+ // Put your custom code into the UserCode.pde with function names matching those listed below and ensure the appropriate #define below is uncommented below
+-//#define USERHOOK_INIT userhook_init();                      // for code to be run once at startup
++#define USERHOOK_INIT userhook_init();                      // for code to be run once at startup
+ //#define USERHOOK_FASTLOOP userhook_FastLoop();            // for code to be run at 100hz
+-//#define USERHOOK_50HZLOOP userhook_50Hz();                  // for code to be run at 50hz
++#define USERHOOK_50HZLOOP userhook_50Hz();                  // for code to be run at 50hz
+ //#define USERHOOK_MEDIUMLOOP userhook_MediumLoop();        // for code to be run at 10hz
+ //#define USERHOOK_SLOWLOOP userhook_SlowLoop();            // for code to be run at 3.3hz
+ //#define USERHOOK_SUPERSLOWLOOP userhook_SuperSlowLoop();  // for code to be run at 1hz
+diff --git a/ArduCopter/GCS_Mavlink.pde b/ArduCopter/GCS_Mavlink.pde
+index 0d4c9ff..2758773 100644
+--- a/ArduCopter/GCS_Mavlink.pde
++++ b/ArduCopter/GCS_Mavlink.pde
+@@ -10,7 +10,7 @@ static bool do_guided(const AP_Mission::Mission_Command& cmd);
+ static bool in_mavlink_delay;
+ 
+ // true if we are out of time in our event timeslice
+-static bool	gcs_out_of_time;
++static bool    gcs_out_of_time;
+ 
+ 
+ // check if a message will fit in the payload space available
+@@ -677,6 +677,15 @@ bool GCS_MAVLINK::try_send_message(enum ap_message id)
+     case MSG_WIND:
+         // unused
+         break;
++        
++    case MSG_RPM_SENSOR:
++        CHECK_PAYLOAD_SIZE(RPM_SENSOR);
++        mavlink_msg_rpm_sensor_send(chan, remote_RPM);
++        // debug: send it twice as int val    
++        mavlink_msg_named_value_int_send(chan, millis(), "RPM Sensor", remote_RPM);
++        //mavlink_msg_named_value_float_send(chan, mavlink_msg_debug_get_time_boot_ms
++        break;
++                
+ 
+     case MSG_RETRY_DEFERRED:
+         break; // just here to prevent a warning
+@@ -892,6 +901,7 @@ GCS_MAVLINK::data_stream_send(void)
+         send_message(MSG_HWSTATUS);
+         send_message(MSG_SYSTEM_TIME);
+         send_message(MSG_RANGEFINDER);
++        send_message(MSG_RPM_SENSOR);   // ******* expansion *******        
+     }
+ }
+ 
+@@ -1224,6 +1234,13 @@ void GCS_MAVLINK::handleMessage(mavlink_message_t* msg)
+             // param4 : timeout (in seconds)
+             result = mavlink_motor_test_start(chan, (uint8_t)packet.param1, (uint8_t)packet.param2, (uint16_t)packet.param3, packet.param4);
+             break;
++            
++        case MAV_CMD_FRONTLIGHT:
++            nano_frontlight_auto = (packet.param1 == 2)?1:0;
++            nano_frontlight_on = (packet.param1 == 1)?1:0;
++            result = MAV_RESULT_ACCEPTED;
++            break;
++            
+ 
+         default:
+             result = MAV_RESULT_UNSUPPORTED;
+diff --git a/ArduCopter/UserCode.pde b/ArduCopter/UserCode.pde
+index d754b8a..6d10ff0 100644
+--- a/ArduCopter/UserCode.pde
++++ b/ArduCopter/UserCode.pde
+@@ -5,6 +5,8 @@ void userhook_init()
+ {
+     // put your initialisation code here
+     // this will be called once at start-up
++    hal.uartD->begin(38400, 20, 20);
++    hal.uartD->set_blocking_writes(false);
+ }
+ #endif
+ 
+@@ -19,6 +21,15 @@ void userhook_FastLoop()
+ void userhook_50Hz()
+ {
+     // put your 50Hz code here
++	static uint8_t cnt = 0;
++	cnt++;
++	if ( (cnt == 1) || (cnt == (1 + 25)) ) read_from_Nano();
++	if ( (cnt == 7) || (cnt == (7 + 25)) ) parse_from_Nano();
++	if ( (cnt == 13) || (cnt == (13 + 25)) ) pack_msg_for_Nano();
++	if ( (cnt == 19) || (cnt == (19 + 25)) ) write_to_Nano();
++	if (cnt >= 50) {
++		cnt = 0;
++	}    
+ }
+ #endif
+ 
+@@ -41,4 +52,56 @@ void userhook_SuperSlowLoop()
+ {
+     // put your 1Hz code here
+ }
+-#endif
+\ No newline at end of file
++#endif
++
++
++void parse_from_Nano() 
++{
++	uint8_t ap_bitflags = 0;
++	if (nanoRXi != msg_fromNano_size) return;
++	nanoRXi = 0;
++	if (msg_fromNano[0] != 0xFF) return;
++	remote_RPM = (int32_t) ( msg_fromNano[1] + (msg_fromNano[2] << 8));
++	ap_bitflags = msg_fromNano[3];
++}
++
++void read_from_Nano()
++{
++	int      c;
++	while ((hal.uartD->available() > 0) && (nanoRXi < msg_fromNano_size))
++	{
++		c = hal.uartD->read();
++		msg_fromNano[nanoRXi] = (uint8_t) c;
++		nanoRXi++;
++	}
++	while (hal.uartD->available() > 0) c = hal.uartD->read(); // clear buffer
++}
++
++void write_to_Nano()
++{
++    hal.uartD->write(msg_toNano, msg_toNano_size);
++}
++
++
++void pack_msg_for_Nano()
++{
++	uint8_t ap_bitflags = 0;
++	uint16_t alt_by_sonar = 0;
++	uint16_t alt_over_home = 0;
++	if (ap.home_is_set) ap_bitflags |= (1 << 0);
++    if (motors.armed() == true) ap_bitflags |= (1 << 1);
++    if (nano_frontlight_auto) ap_bitflags |= (1 << 2);
++    if (nano_frontlight_on) ap_bitflags |= (1 << 3);
++	alt_by_sonar = (uint16_t) sonar_alt;
++	alt_over_home = (uint16_t) (( current_loc.alt - ahrs.get_home().alt ) / 100);
++	msg_toNano[0] = 0xFF;
++	msg_toNano[1] = ap_bitflags;
++	msg_toNano[2] = (uint8_t) (alt_by_sonar & 0x00FF);
++	msg_toNano[3] = (uint8_t) ((alt_by_sonar & 0xFF00) >> 8);
++	msg_toNano[4] = (uint8_t) (alt_over_home & 0x00FF);
++	msg_toNano[5] = (uint8_t) ((alt_over_home & 0xFF00) >> 8);
++    msg_toNano[6] = (uint8_t) (g.mnt_autortrct_h);
++    msg_toNano[7] = (uint8_t) (control_mode);
++    msg_toNano[8] = 0x00;
++
++}
+\ No newline at end of file
+diff --git a/ArduCopter/UserVariables.h b/ArduCopter/UserVariables.h
+index 6f59621..ec61797 100644
+--- a/ArduCopter/UserVariables.h
++++ b/ArduCopter/UserVariables.h
+@@ -1,4 +1,6 @@
+ /// -*- tab-width: 4; Mode: C++; c-basic-offset: 4; indent-tabs-mode: nil -*-
++#ifndef __ARDUCOPTER_USERVAR_H__
++#define __ARDUCOPTER_USERVAR_H__
+ 
+ // user defined variables
+ 
+@@ -16,4 +18,19 @@ int                 WiiDisplacementY=0;
+ 
+ #endif  // USERHOOK_VARIABLES
+ 
++#define msg_toNano_size 9
++#define msg_fromNano_size 4
++
++// byte = unsigned char
++
++int16_t remote_RPM;
++uint8_t nano_frontlight_auto = 1;
++uint8_t nano_frontlight_on = 0;
++uint8_t nanoRXi = 0;
++uint8_t msg_toNano[msg_toNano_size] = {0};
++uint8_t msg_fromNano[msg_fromNano_size] = {0};
++
++#endif
++
++
+ 
+diff --git a/libraries/GCS_MAVLink/GCS.h b/libraries/GCS_MAVLink/GCS.h
+index 541d852..914da28 100644
+--- a/libraries/GCS_MAVLink/GCS.h
++++ b/libraries/GCS_MAVLink/GCS.h
+@@ -46,6 +46,7 @@ enum ap_message {
+     MSG_HWSTATUS,
+     MSG_WIND,
+     MSG_RANGEFINDER,
++    MSG_RPM_SENSOR,
+     MSG_RETRY_DEFERRED // this must be last
+ };
+ 
+diff --git a/libraries/GCS_MAVLink/message_definitions/ardupilotmega.xml b/libraries/GCS_MAVLink/message_definitions/ardupilotmega.xml
+index 04aae0a..ca34cb8 100644
+--- a/libraries/GCS_MAVLink/message_definitions/ardupilotmega.xml
++++ b/libraries/GCS_MAVLink/message_definitions/ardupilotmega.xml
+@@ -1,6 +1,7 @@
+ <?xml version='1.0'?>
+ <mavlink>
+      <include>common.xml</include>
++     <include>expansion.xml</include>
+      <!-- note that APM specific messages should use the command id
+       range from 150 to 250, to leave plenty of room for growth
+       of common.xml 
+diff --git a/libraries/GCS_MAVLink/message_definitions/expansion.xml b/libraries/GCS_MAVLink/message_definitions/expansion.xml
+new file mode 100644
+index 0000000..b78feab
+--- /dev/null
++++ b/libraries/GCS_MAVLink/message_definitions/expansion.xml
+@@ -0,0 +1,25 @@
++<?xml version='1.0'?>
++<mavlink>
++	<enums>
++	  <enum name="MAV_CMD" >
++	    <!-- Camera Controller Mission Commands Enumeration -->
++	    <entry name="MAV_CMD_FRONTLIGHT" value="1">
++	      <description>Mission command for Lights.</description>
++	      <param index="1">0: Off, 1:On, 2: auto</param>
++	      <param index="2">Empty</param>
++		  <param index="3">Empty</param>
++		  <param index="4">Empty</param>
++		  <param index="5">Empty</param>
++		  <param index="6">Empty</param>
++		  <param index="7">Empty</param>		  
++        </entry>
++		</enum>
++	</enums>
++	<messages>
++		<message name="RPM_SENSOR" id="201">
++			<description>Head RPM</description>
++			<field name="rpm" type="int16_t">rpm</field>
++		</message> 	 
++	</messages>
++</mavlink>
++
+-- 
+1.8.4.msysgit.0
+

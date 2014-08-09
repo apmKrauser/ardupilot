@@ -98,6 +98,7 @@ public:
         k_param_angle_rate_max,
         k_param_rssi_range,
         k_param_rc_feel_rp,             // 40
+        k_param_mnt_autortrct_h,
 
         // 65: AP_Limits Library
         k_param_limits = 65,            // deprecated - remove
@@ -365,6 +366,7 @@ public:
     AP_Int8         ch7_option;
     AP_Int8         ch8_option;
     AP_Int8         arming_check;
+    AP_Int8         mnt_autortrct_h;
 
 #if FRAME_CONFIG ==     HELI_FRAME
     // Heli
