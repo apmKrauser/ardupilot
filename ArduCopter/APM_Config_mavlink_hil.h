@@ -5,7 +5,9 @@
 // Mavlink supports
 // 1. HIL_MODE_ATTITUDE : simulated position, airspeed, and attitude
 // 2. HIL_MODE_SENSORS: full sensor simulation
+#ifndef HIL_MODE
 #define HIL_MODE            HIL_MODE_ATTITUDE
+#endif
 
 // HIL_PORT SELCTION
 //

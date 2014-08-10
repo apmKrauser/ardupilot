@@ -5,8 +5,10 @@ void userhook_init()
 {
     // put your initialisation code here
     // this will be called once at start-up
-    hal.uartD->begin(38400, 20, 20);
-    hal.uartD->set_blocking_writes(false);
+    
+    hal.uartC->begin(38400, 32, 32);
+    hal.uartC->set_blocking_writes(false);
+    
 }
 #endif
 
@@ -29,7 +31,7 @@ void userhook_50Hz()
 	if ( (cnt == 19) || (cnt == (19 + 25)) ) write_to_Nano();
 	if (cnt >= 50) {
 		cnt = 0;
-	}    
+	} 
 }
 #endif
 
@@ -54,7 +56,6 @@ void userhook_SuperSlowLoop()
 }
 #endif
 
-
 void parse_from_Nano() 
 {
 	uint8_t ap_bitflags = 0;
@@ -68,18 +69,18 @@ void parse_from_Nano()
 void read_from_Nano()
 {
 	int      c;
-	while ((hal.uartD->available() > 0) && (nanoRXi < msg_fromNano_size))
+	while ((hal.uartC->available() > 0) && (nanoRXi < msg_fromNano_size))
 	{
-		c = hal.uartD->read();
+		c = hal.uartC->read();
 		msg_fromNano[nanoRXi] = (uint8_t) c;
 		nanoRXi++;
 	}
-	while (hal.uartD->available() > 0) c = hal.uartD->read(); // clear buffer
+	while (hal.uartC->available() > 0) c = hal.uartC->read(); // clear buffer
 }
 
 void write_to_Nano()
 {
-    hal.uartD->write(msg_toNano, msg_toNano_size);
+    hal.uartC->write(msg_toNano, msg_toNano_size);
 }
 
 
@@ -105,3 +106,4 @@ void pack_msg_for_Nano()
     msg_toNano[8] = 0x00;
 
 }
+

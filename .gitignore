@@ -78,3 +78,10 @@ ArduCopter/Arducopter3.1.5.sdf
 ArduCopter/Visual Micro/Configuration.Release.vmps.xml
 ArduCopter/Visual Micro/Compile.vmps.xml
 ArduCopter/Visual Micro/Upload.vmps.xml
+ArduCopter/ArduCopter.vcxproj
+ArduCopter/ArduCopter.vcxproj
+*.sdf
+*.suo
+ArduCopter/Visual Micro/Compile.vmps.xml
+ArduCopter/Visual Micro/Configuration.Release.vmps.xml
+ArduCopter/Visual Micro/Upload.vmps.xml
