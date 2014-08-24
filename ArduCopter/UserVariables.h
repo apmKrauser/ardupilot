@@ -18,8 +18,17 @@ int                 WiiDisplacementY=0;
 
 #endif  // USERHOOK_VARIABLES
 
+
+
 #define msg_toNano_size 9
 #define msg_fromNano_size 4
+#define LOG_ADDSENSORS_MSG 0xF0
+
+struct PACKED log_AddSensors {
+    LOG_PACKET_HEADER;
+    int16_t val1;
+    int16_t val2;   
+};
 
 // byte = unsigned char
 

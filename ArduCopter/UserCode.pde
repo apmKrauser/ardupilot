@@ -46,6 +46,7 @@ void userhook_MediumLoop()
 void userhook_SlowLoop()
 {
     // put your 3.3Hz code here
+    // Log_Write_AddSensors();
 }
 #endif
 
@@ -53,6 +54,7 @@ void userhook_SlowLoop()
 void userhook_SuperSlowLoop()
 {
     // put your 1Hz code here
+    Log_Write_AddSensors();
 }
 #endif
 
@@ -110,4 +112,19 @@ void pack_msg_for_Nano()
     msg_toNano[8] = 0x00;
 
 }
+
+
+static void Log_Write_AddSensors()
+{
+    struct log_AddSensors pkt = {
+        LOG_PACKET_HEADER_INIT(LOG_ADDSENSORS_MSG),
+        val1              : remote_RPM,
+        val2              : 0
+    };
+    DataFlash.WriteBlock(&pkt, sizeof(pkt));
+}
+
+
+
+
 

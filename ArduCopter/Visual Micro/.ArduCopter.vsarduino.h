@@ -222,6 +222,7 @@ void parse_from_Nano();
 void read_from_Nano();
 void write_to_Nano();
 void pack_msg_for_Nano();
+static void Log_Write_AddSensors();
 static void auto_tune_initialise();
 static void auto_tune_intra_test_gains();
 static void auto_tune_restore_orig_gains();
