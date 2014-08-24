@@ -59,10 +59,14 @@ void userhook_SuperSlowLoop()
 void parse_from_Nano() 
 {
 	uint8_t ap_bitflags = 0;
+    uint16_t _rpm = 0;
 	if (nanoRXi != msg_fromNano_size) return;
 	nanoRXi = 0;
 	if (msg_fromNano[0] != 0xFF) return;
-	remote_RPM = (int32_t) ( msg_fromNano[1] + (msg_fromNano[2] << 8));
+    _rpm = msg_fromNano[2];
+    _rpm <<= 8;
+    _rpm += msg_fromNano[1];
+	remote_RPM = (int16_t) _rpm;
 	ap_bitflags = msg_fromNano[3];
 }
 
