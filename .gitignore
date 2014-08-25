@@ -65,27 +65,17 @@ status.txt
 tags
 test.ArduCopter/*
 *.vcxproj
-ArduCopter/ArduCopter.vcxproj.filters
-ArduCopter/Visual Micro/.ArduCopter.vsarduino.h
-ArduCopter/Visual Micro/Compile.vmps.xml
-ArduCopter/Visual Micro/Configuration.Release.vmps.xml
-ArduCopter/Visual Micro/Upload.vmps.xml
-ArduCopter/Visual Micro/Compile.vmps.xml
-ArduCopter/Visual Micro/Compile.vmps.xml
-ArduCopter/Visual Micro/Upload.vmps.xml
-ArduCopter/ArduCopter.vcxproj
-ArduCopter/Arducopter3.1.5.sdf
-ArduCopter/Visual Micro/Configuration.Release.vmps.xml
-ArduCopter/Visual Micro/Compile.vmps.xml
-ArduCopter/Visual Micro/Upload.vmps.xml
-ArduCopter/ArduCopter.vcxproj
-ArduCopter/ArduCopter.vcxproj
 *.sdf
 *.suo
+*.lastbuildstate
+ArduCopter/Visual Micro/*
+ArduCopter/ArduCopter.vcxproj.filters
+ArduCopter/Arducopter3.1.5.opensdf
 ArduCopter/Visual Micro/Compile.vmps.xml
 ArduCopter/Visual Micro/Configuration.Release.vmps.xml
 ArduCopter/Visual Micro/Upload.vmps.xml
-ArduCopter/Arducopter3.1.5.opensdf
-ArduCopter/Arducopter3.1.5.v11.suo
-ArduCopter/Visual Micro/.ArduCopter.vsarduino.h
+ArduCopter/Visual Micro/Compile.vmps.xml
+ArduCopter/Visual Micro/Configuration.Release.vmps.xml
 ArduCopter/Visual Micro/Upload.vmps.xml
+ArduCopter/Release/ArduCopter.log
+

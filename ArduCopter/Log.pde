@@ -714,7 +714,7 @@ static const struct LogStructure log_structure[] PROGMEM = {
     { LOG_ERROR_MSG, sizeof(log_Error),         
       "ERR",   "BB",         "Subsys,ECode" },
     { LOG_ADDSENSORS_MSG, sizeof(log_AddSensors),
-      "SENS", "ffffff", "RPM,Test" },
+      "SENS", "hh", "RPM,Test" },
 };
 
 // Read the DataFlash log memory
